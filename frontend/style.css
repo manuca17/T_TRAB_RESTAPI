@@ -1,1 +1,360 @@
-/* Estilos para a página */
+/* ===== Estilos da página de gestão de alunos ===== */
+
+:root {
+  --cor-fundo: #f4f6f9;
+  --cor-cartao: #ffffff;
+  --cor-texto: #1f2933;
+  --cor-texto-suave: #6b7785;
+  --cor-borda: #dde3ea;
+  --cor-primaria: #2f6fed;
+  --cor-primaria-escura: #2457c0;
+  --cor-perigo: #d64545;
+  --cor-perigo-escura: #b33636;
+  --cor-sucesso: #2f8f5b;
+  --raio: 8px;
+  --sombra: 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0 16px 48px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+/* ===== Cabeçalho ===== */
+
+.topo {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 0 24px;
+}
+
+.topo h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.subtitulo {
+  margin: 4px 0 0;
+  color: var(--cor-texto-suave);
+  font-size: 0.9rem;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===== Cartões ===== */
+
+.cartao {
+  background: var(--cor-cartao);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 20px;
+}
+
+.cartao h2 {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+}
+
+.cabecalho-seccao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cabecalho-seccao h2 {
+  margin: 0;
+}
+
+.ferramentas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 100%;
+}
+
+/* Sem isto, os nomes longos dos cursos esticam o select para além do cartão */
+.ferramentas select,
+.ferramentas input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ===== Formulário ===== */
+
+.campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.campo-pequeno {
+  max-width: 200px;
+}
+
+label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+input[type="text"],
+input[type="search"],
+select {
+  padding: 9px 10px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: -1px;
+  border-color: var(--cor-primaria);
+}
+
+/* Campo marcado como inválido pela validação em script.js */
+input.invalido,
+select.invalido {
+  border-color: var(--cor-perigo);
+}
+
+.acoes-formulario {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.linha-formulario {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.linha-formulario input {
+  flex: 1 1 240px;
+}
+
+/* ===== Botões ===== */
+
+.btn {
+  padding: 9px 16px;
+  font: inherit;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primario {
+  background: var(--cor-primaria);
+  color: #fff;
+}
+
+.btn-primario:hover:not(:disabled) {
+  background: var(--cor-primaria-escura);
+}
+
+.btn-secundario {
+  background: #fff;
+  color: var(--cor-texto);
+  border-color: var(--cor-borda);
+}
+
+.btn-secundario:hover:not(:disabled) {
+  background: #eef1f5;
+}
+
+.btn-pequeno {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+}
+
+.btn-perigo {
+  background: #fff;
+  color: var(--cor-perigo);
+  border-color: #f0c9c9;
+}
+
+.btn-perigo:hover:not(:disabled) {
+  background: var(--cor-perigo);
+  color: #fff;
+}
+
+/* ===== Tabela ===== */
+
+.tabela-envolvente {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--cor-texto-suave);
+  background: #f8fafc;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Realce temporário da linha acabada de criar ou editar */
+tbody tr.destacada {
+  background: #e8f0fe;
+}
+
+.col-acoes {
+  width: 1%;
+  white-space: nowrap;
+}
+
+td.acoes {
+  white-space: nowrap;
+  display: flex;
+  gap: 6px;
+}
+
+.vazio {
+  text-align: center;
+  color: var(--cor-texto-suave);
+  padding: 24px 12px;
+}
+
+.contador {
+  margin: 12px 0 0;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ===== Lista de cursos ===== */
+
+.lista-cursos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lista-cursos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  background: #f8fafc;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+}
+
+.lista-cursos .vazio {
+  justify-content: center;
+  background: none;
+  border: none;
+}
+
+.etiqueta-contagem {
+  font-size: 0.8rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ===== Mensagens ===== */
+
+.mensagem {
+  padding: 12px 14px;
+  border-radius: var(--raio);
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+}
+
+.mensagem.erro {
+  background: #fdecec;
+  border-color: #f5c2c2;
+  color: var(--cor-perigo-escura);
+}
+
+.mensagem.sucesso {
+  background: #e8f6ee;
+  border-color: #bfe3cd;
+  color: var(--cor-sucesso);
+}
+
+/* ===== Rodapé ===== */
+
+.rodape {
+  max-width: 960px;
+  margin: 28px auto 0;
+  font-size: 0.8rem;
+  color: var(--cor-texto-suave);
+}
+
+.rodape code {
+  background: #e8ecf1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ===== Ecrãs pequenos ===== */
+
+@media (max-width: 600px) {
+  .ferramentas {
+    width: 100%;
+  }
+
+  .ferramentas input,
+  .ferramentas select {
+    flex: 1 1 100%;
+  }
+
+  td.acoes {
+    flex-direction: column;
+  }
+}

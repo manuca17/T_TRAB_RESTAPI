@@ -1,1 +1,122 @@
-<!-- Página CRUD de Alunos -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Alunos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topo">
+    <h1>Gestão de Alunos</h1>
+    <p class="subtitulo">Atividade Prática #1 &middot; Consumo de APIs RESTful</p>
+  </header>
+
+  <main>
+    <!-- Mensagens de estado (erros, confirmações) -->
+    <div id="mensagem" class="mensagem" hidden></div>
+
+    <!-- ============ FORMULÁRIO (adicionar / editar) ============ -->
+    <section class="cartao">
+      <h2 id="tituloFormulario">Adicionar aluno</h2>
+
+      <form id="formAluno" novalidate>
+        <!-- Guarda o id quando estamos em modo de edição; vazio = criação -->
+        <input type="hidden" id="alunoId">
+
+        <div class="campos">
+          <div class="campo">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required maxlength="50" placeholder="Joana">
+          </div>
+
+          <div class="campo">
+            <label for="apelido">Apelido</label>
+            <input type="text" id="apelido" name="apelido" required maxlength="50" placeholder="Silva">
+          </div>
+
+          <div class="campo">
+            <label for="idCurso">Curso</label>
+            <!-- Preenchido dinamicamente a partir de GET /cursos -->
+            <select id="idCurso" name="idCurso" required>
+              <option value="">A carregar cursos...</option>
+            </select>
+          </div>
+
+          <div class="campo campo-pequeno">
+            <label for="anoCurricular">Ano curricular</label>
+            <select id="anoCurricular" name="anoCurricular" required>
+              <option value="">--</option>
+              <option value="1">1.º</option>
+              <option value="2">2.º</option>
+              <option value="3">3.º</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="acoes-formulario">
+          <button type="submit" class="btn btn-primario" id="btnGuardar">Adicionar</button>
+          <button type="button" class="btn btn-secundario" id="btnCancelar" hidden>Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ LISTA DE ALUNOS ============ -->
+    <section class="cartao">
+      <div class="cabecalho-seccao">
+        <h2>Alunos</h2>
+        <div class="ferramentas">
+          <input type="search" id="pesquisa" placeholder="Pesquisar por nome ou apelido">
+          <select id="filtroCurso">
+            <option value="">Todos os cursos</option>
+          </select>
+          <button type="button" class="btn btn-secundario" id="btnRecarregar">Recarregar</button>
+        </div>
+      </div>
+
+      <div class="tabela-envolvente">
+        <table id="tabelaAlunos">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Apelido</th>
+              <th>Curso</th>
+              <th>Ano</th>
+              <th class="col-acoes">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabela">
+            <tr><td colspan="6" class="vazio">A carregar alunos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="contador" id="contador"></p>
+    </section>
+
+    <!-- ============ CURSOS (gestão opcional) ============ -->
+    <section class="cartao">
+      <div class="cabecalho-seccao">
+        <h2>Cursos</h2>
+      </div>
+
+      <form id="formCurso" class="linha-formulario" novalidate>
+        <input type="text" id="nomeDoCurso" required maxlength="80" placeholder="Nome do novo curso">
+        <button type="submit" class="btn btn-primario">Adicionar curso</button>
+      </form>
+
+      <ul id="listaCursos" class="lista-cursos">
+        <li class="vazio">A carregar cursos...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <span>API: <code id="apiUrl"></code></span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
