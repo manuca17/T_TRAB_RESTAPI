@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alunos - versão simples</title>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 16px;
+      line-height: 1.5;
+      background: #ffffff;
+      color: #1f2933;
+    }
+
+    button {
+      padding: 10px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    ul {
+      margin-top: 20px;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lista de Alunos</h1>
+
+  <button id="btnCarregar">Carregar alunos</button>
+
+  <!-- É aqui que os alunos vão aparecer -->
+  <ul id="listaAlunos"></ul>
+
+  <script>
+    const API_URL = 'http://localhost:3000';
+
+    /**
+     * FUNÇÃO 1 - vai buscar os alunos à API.
+     * É assíncrona porque o fetch demora: o `await` espera pela resposta
+     * sem bloquear o resto da página.
+     */
+    async function getAlunos() {
+      const resposta = await fetch(`${API_URL}/alunos`);
+      const alunos = await resposta.json();   // converte o corpo JSON em array
+      return alunos;
+    }
+
+    /**
+     * FUNÇÃO 2 - chama a getAlunos e desenha o resultado no ecrã.
+     */
+    async function mostrarAlunos() {
+      const lista = document.querySelector('#listaAlunos');
+      lista.innerHTML = '<li>A carregar...</li>';
+
+      const alunos = await getAlunos();   // espera pelos dados
+
+      lista.innerHTML = '';   // limpa o "A carregar..."
+
+      for (const aluno of alunos) {
+        const item = document.createElement('li');
+        item.textContent = `${aluno.nome} ${aluno.apelido} - ${aluno.anoCurricular}.º ano`;
+        lista.appendChild(item);
+      }
+    }
+
+    // Ao clicar no botão, corre a mostrarAlunos
+    document.querySelector('#btnCarregar').addEventListener('click', mostrarAlunos);
+  </script>
+
+</body>
+</html>
