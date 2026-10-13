@@ -5,11 +5,13 @@
 
 /**
  * URL base da API.
- * - Desenvolvimento: json-server em http://localhost:3000
- * - Parte 5 (deploy): substituir pelo endereço público da API no Render,
- *   por exemplo 'https://trab1-api.onrender.com'
+ * - Vazio ('') significa "a mesma origem desta página": funciona tanto quando
+ *   é o json-server a servir o frontend (porta 3000) como quando é a API
+ *   Express (porta 4000), e também depois do deploy.
+ * - Para apontar para uma API noutro domínio, escrever aqui o endereço
+ *   completo, por exemplo 'https://trab1-api.onrender.com'.
  */
-const API_URL = 'http://localhost:3000';
+const API_URL = '';
 
 // Estado em memória, para filtrar e mostrar o nome do curso sem repetir pedidos
 let alunos = [];
@@ -61,7 +63,8 @@ async function pedido(caminho, opcoes = {}) {
     resposta = await fetch(`${API_URL}${caminho}`, config);
   } catch (erro) {
     // Falha de rede: servidor em baixo, CORS, DNS...
-    throw new Error(`Não foi possível contactar a API em ${API_URL}. O servidor está a correr?`);
+    const onde = API_URL || window.location.origin;
+    throw new Error(`Não foi possível contactar a API em ${onde}. O servidor está a correr?`);
   }
 
   if (!resposta.ok) {
@@ -146,9 +149,11 @@ function desenharAlunos() {
       : 'Nenhum aluno corresponde aos filtros.';
     corpoTabela.innerHTML = `<tr><td colspan="6" class="vazio">${texto}</td></tr>`;
   } else {
-    corpoTabela.innerHTML = lista.map((aluno) => `
+    corpoTabela.innerHTML = lista.map((aluno, indice) => `
       <tr data-id="${escapar(aluno.id)}">
-        <td>${escapar(aluno.id)}</td>
+        <!-- Número de linha: o id do MongoDB é um ObjectId longo de mais
+             para a tabela, por isso fica só no title e no atributo data-id -->
+        <td title="id: ${escapar(aluno.id)}">${indice + 1}</td>
         <td>${escapar(aluno.nome)}</td>
         <td>${escapar(aluno.apelido)}</td>
         <td>${escapar(nomeDoCurso(aluno.idCurso))}</td>
@@ -255,7 +260,7 @@ function modoEdicao(aluno) {
   selectCurso.value = aluno.idCurso ?? '';
   selectAno.value = aluno.anoCurricular ?? '';
 
-  tituloFormulario.textContent = `Editar aluno #${aluno.id}`;
+  tituloFormulario.textContent = `Editar aluno: ${aluno.nome} ${aluno.apelido}`;
   btnGuardar.textContent = 'Guardar alterações';
   btnCancelar.hidden = false;
 
@@ -287,8 +292,9 @@ function lerFormulario() {
   return {
     nome: inputNome.value.trim(),
     apelido: inputApelido.value.trim(),
-    // Os selects devolvem sempre texto; a API guarda estes campos como números
-    idCurso: Number(selectCurso.value),
+    // O json-server usa ids numéricos; o MongoDB usa ObjectId (texto).
+    // Só convertemos para número quando o id é mesmo numérico.
+    idCurso: /^\d+$/.test(selectCurso.value) ? Number(selectCurso.value) : selectCurso.value,
     anoCurricular: Number(selectAno.value),
   };
 }
@@ -440,5 +446,5 @@ pesquisa.addEventListener('input', desenharAlunos);
 filtroCurso.addEventListener('change', desenharAlunos);
 btnRecarregar.addEventListener('click', carregarDados);
 
-document.querySelector('#apiUrl').textContent = API_URL;
+document.querySelector('#apiUrl').textContent = API_URL || window.location.origin;
 carregarDados();
